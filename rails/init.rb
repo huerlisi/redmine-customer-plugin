@@ -21,4 +21,5 @@ Redmine::Plugin.register :customer_plugin do
   end
 
   menu :project_menu, :customers, {:controller => 'customers', :action => 'show'}, :caption => :customer_title
+  menu :top_menu, :customers, {:controller => 'customers', :action => 'list'}, :caption => :label_customer_plural
 end

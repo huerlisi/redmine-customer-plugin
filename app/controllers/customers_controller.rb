@@ -1,7 +1,9 @@
 class CustomersController < ApplicationController
   unloadable
   layout 'base'
-  before_filter :find_project, :authorize
+  before_filter :find_project
+  before_filter :authorize, :only => [:select, :assign, :show]
+  before_filter :authorize_global, :except => [:select, :assign, :show]
   before_filter :find_customer, :only => [:edit, :update, :destroy]
   before_filter :find_customers, :only => [:list, :select]
  
@@ -60,7 +62,11 @@ class CustomersController < ApplicationController
     @customer = Customer.new(params[:customer])
     if @customer.save
       flash[:notice] = l(:notice_successful_create)
-      redirect_to :action => "select", :id => params[:id]
+      if @project
+        redirect_to :action => "select", :id => params[:id]
+      else
+        redirect_to :action => "list"
+      end
     else
       render :action => "new", :id => params[:id]
     end
@@ -71,7 +77,6 @@ class CustomersController < ApplicationController
   def find_project
     @project = Project.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    render_404
   end
 
   def find_customer
@@ -83,5 +88,4 @@ class CustomersController < ApplicationController
   def find_customers
     @customers = Customer.find(:all) || []
   end
-
 end
