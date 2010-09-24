@@ -2,13 +2,14 @@ class CustomersController < ApplicationController
   unloadable
   layout 'base'
   before_filter :find_project
-  before_filter :authorize, :only => [:select, :assign, :show]
-  before_filter :authorize_global, :except => [:select, :assign, :show]
-  before_filter :find_customer, :only => [:edit, :update, :destroy]
+  before_filter :authorize, :only => [:select, :assign]
+  before_filter :authorize_global, :except => [:select, :assign]
+  before_filter :find_customer, :only => [:edit, :update, :destroy, :show]
   before_filter :find_customers, :only => [:list, :select]
  
   def show
-    @customer = Customer.find_by_id(@project.customer_id)
+    @customer ||= Customer.find_by_id(@project.customer_id)
+    #@customer = Customer.find_by_id(@project.customer_id)
   end
   
   def list

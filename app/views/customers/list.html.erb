@@ -11,7 +11,7 @@
   <table class="list">
     <% @customers.each do |customer| %>
       <tr class="<%= cycle('odd', 'even') %>">
-        <td><%= customer.pretty_name %></td>
+        <td><%= link_to(customer.pretty_name, {:controller => 'customers', :action => 'show', :customer_id => customer.id}) %></td>
         <td align="right">
           <small>
               <%= link_to_if_globally_authorized l(:button_edit), {:controller => 'customers', :action => 'edit', :id => @project, :customer_id => customer.id}, :class => 'icon icon-edit' %>
